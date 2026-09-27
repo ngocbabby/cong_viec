@@ -487,7 +487,27 @@ export const lessonMeta = {
   '今日・昨日・おととい':['きょう・きのう・おととい','Hôm nay / hôm qua / hôm kia'],
   '本日・昨日（さくじつ）・一昨日（いっさくじつ）':['ほんじつ・さくじつ・いっさくじつ','Hôm nay / hôm qua / hôm kia (trang trọng)'],
   '明日・あさって':['あした・あさって','Ngày mai / ngày kia'],
-  '明日（あす）・明後日（みょうごにち）':['あす・みょうごにち','Ngày mai / ngày kia (trang trọng)'],
+  '明日（あす）・明後日（みょうごにち）':['あす・みょうごにち','Ngày mai / ngày kia (trang trọng)'],,
+
+  // Page 19 - common keigo mistakes / self vs. other side
+  '（社外の人に）○○社長が':['（しゃがい の ひと に）○○しゃちょう が','Khi nói với người ngoài công ty: “Giám đốc ○○...”'],
+  '○○が（社内の người không gắn kính ngữ khi nói với bên ngoài）':['○○ が','Khi nói ra bên ngoài, không gắn chức danh/kính ngữ vào người phía công ty mình'],
+  'ご苦労さまです':['ごくろうさま です','Cách nói “cảm ơn vì đã vất vả” thường dùng từ cấp trên xuống'],
+  'お疲れさまです':['おつかれさま です','Cảm ơn / anh chị đã vất vả (cách dùng an toàn trong công việc)'],
+  'お客様がそう申しておりました':['おきゃくさま が そう もうして おりました','Sai ngữ cảnh: dùng khiêm nhường ngữ cho hành động của khách'],
+  'お客様がそうおっしゃっていました':['おきゃくさま が そう おっしゃって いました','Khách đã nói như vậy'],
+  '資料は拝見されましたでしょうか':['しりょう は はいけん されました でしょうか','Cách dùng sai vì 拝見 là khiêm nhường ngữ của phía mình'],
+  '資料には目を通していただけたでしょうか':['しりょう には め を とおして いただけた でしょうか','Anh/chị đã có dịp xem qua tài liệu chưa ạ?'],
+  '先日私がお行きした際には':['せんじつ わたし が おいき した さい には','Cách dùng sai: thêm お vào 行く của bản thân'],
+  '先日私がお伺いした際には':['せんじつ わたし が おうかがい した さい には','Lần trước khi tôi đến thăm / ghé qua...'],
+  '会社':['かいしゃ','Công ty'],
+  '相手: 貴社・御社 ／ 自分: 弊社・当社':['あいて：きしゃ・おんしゃ ／ じぶん：へいしゃ・とうしゃ','Phía đối phương: quý công ty ／ phía mình: công ty chúng tôi'],
+  '銀行':['ぎんこう','Ngân hàng'],
+  '相手: 貴行・御行 ／ 自分: 弊行・当行':['あいて：きこう・おんこう ／ じぶん：へいこう・とうこう','Phía đối phương: quý ngân hàng ／ phía mình: ngân hàng chúng tôi'],
+  '両親・父・母':['りょうしん・ちち・はは','Cha mẹ・cha・mẹ'],
+  '相手: ご両親・お父様・お母様 ／ 自分: 父母・父・母':['あいて：ごりょうしん・おとうさま・おかあさま ／ じぶん：ふぼ・ちち・はは','Phía đối phương: cha mẹ / bố / mẹ (kính trọng) ／ phía mình: cha mẹ / bố / mẹ'],
+  '相手: ご高覧・ご一覧 ／ 自分: 拝見・拝読':['あいて：ごこうらん・ごいちらん ／ じぶん：はいけん・はいどく','Phía đối phương: xem / đọc ／ phía mình: xin xem / xin đọc (khiêm nhường)'],
+  '相手: ご来訪・ご引見 ／ 自分: お伺い・参上':['あいて：ごらいほう・ごいんけん ／ じぶん：おうかがい・さんじょう','Phía đối phương: đến thăm / tiếp kiến ／ phía mình: đến thăm / đến gặp'],
 }
 
 export function getLessonMeta(text){
