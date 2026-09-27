@@ -4,6 +4,7 @@ import './styles.css'
 import LessonVisual from './components/LessonVisuals.jsx'
 import { basicLessons as helloLessons, reframes, preferenceItems, checklistGroups, keigoVerbs, politePairs } from './data/basicLessons.js'
 import { interviewBookIntro, getSampleForQuestion } from './data/interviewSamples.js'
+import { getLessonMeta } from './data/lessonMeta.js'
 
 const interviewQuestions = [
   ['自己紹介をお願いします。','じこしょうかい を おねがいします','Mời bạn tự giới thiệu về bản thân.','基本','事項紹介していただけるようお願いします'],
@@ -139,44 +140,77 @@ function FuriParagraph({jp, reading, furigana}) {
   </div>
 }
 
-function PairTable({rows, left='Gốc', right='Nên dùng'}) {
+function StudyTerm({text, vi, reading, furigana, compact=false}) {
+  const meta = getLessonMeta(text)
+  const r = reading || meta?.[0] || ''
+  const meaning = vi || meta?.[1] || ''
+  return <div className={'study-term ' + (compact ? 'compact' : '')}>
+    <div className="study-term-main">
+      <RubyLine text={text} reading={r} furigana={furigana} className="study-term-jp" />
+      <button className="term-audio" type="button" aria-label={'Nghe ' + text} onClick={(e)=>{e.stopPropagation();speak(text)}}>🔊</button>
+    </div>
+    {meaning && <div className="study-term-vi">🇻🇳 {meaning}</div>}
+  </div>
+}
+
+function PairTable({rows, left='Gốc', right='Nên dùng', furigana=true}) {
   return <div className="pair-table">
     <div className="pair-head"><b>{left}</b><b>{right}</b></div>
-    {rows.map((r,i)=><div className="pair-row" key={i}><span>{r[0]}</span><span>{r[1]}</span></div>)}
+    {rows.map((r,i)=><div className="pair-row" key={i}>
+      <StudyTerm text={r[0]} furigana={furigana} compact />
+      <StudyTerm text={r[1]} furigana={furigana} compact />
+    </div>)}
   </div>
 }
 
 function SectionRenderer({section, furigana}) {
   return <section className="content-card rich-section">
-    <div className="rich-heading"><div><h2>{section.h}</h2>{section.vi && <p>{section.vi}</p>}</div></div>
+    <div className="rich-heading">
+      <StudyTerm text={section.h} vi={section.vi} furigana={furigana} />
+    </div>
 
     {section.jp && <FuriParagraph jp={section.jp} reading={section.reading} furigana={furigana} />}
     {section.body && <p className="large-text">{section.body}</p>}
 
-    {section.bullets && <ul className="lesson-bullets">{section.bullets.map((x,i)=><li key={i}>{x}</li>)}</ul>}
+    {section.bullets && <div className="lesson-study-list">
+      {section.bullets.map((x,i)=><StudyTerm key={i} text={x} furigana={furigana} />)}
+    </div>}
 
-    {section.cards && <div className="info-card-grid">{section.cards.map((x,i)=><div className="mini-info-card" key={i}><b>{x[0]}</b><span>{x[1]}</span></div>)}</div>}
+    {section.cards && <div className="info-card-grid">
+      {section.cards.map((x,i)=><div className="mini-info-card" key={i}><StudyTerm text={x[0]} vi={x[1]} furigana={furigana} /></div>)}
+    </div>}
 
-    {section.steps && <div className="steps-list">{section.steps.map((x,i)=><div className="step-row" key={i}><b>{x[0]}</b><div><strong>{x[1]}</strong>{x[2]&&<span>{x[2]}</span>}</div></div>)}</div>}
+    {section.steps && <div className="steps-list">{section.steps.map((x,i)=><div className="step-row" key={i}>
+      <b>{x[0]}</b><div><StudyTerm text={x[1]} vi={x[2]} furigana={furigana} compact /></div>
+    </div>)}</div>}
 
-    {section.prompts && <div className="prompt-list">{section.prompts.map((x,i)=><div key={i}><b>{x[0]}</b><span>{x[1]}</span></div>)}</div>}
+    {section.prompts && <div className="prompt-list">{section.prompts.map((x,i)=><div key={i}><StudyTerm text={x[0]} vi={x[1]} furigana={furigana} compact /></div>)}</div>}
 
-    {section.strengths && <div className="strength-table">{section.strengths.map((x,i)=><div key={i}><span>{x[0]}</span><b>{x[1]}</b></div>)}</div>}
+    {section.strengths && <div className="strength-table">{section.strengths.map((x,i)=><div key={i}>
+      <StudyTerm text={x[0]} furigana={furigana} compact />
+      <StudyTerm text={x[1]} furigana={furigana} compact />
+    </div>)}</div>}
 
-    {section.reframes && <PairTable rows={reframes} left="書きかえたい語" right="積極的表現" />}
+    {section.reframes && <PairTable rows={reframes} left="書きかえたい語" right="積極的表現" furigana={furigana} />}
 
-    {section.preferences && <div className="preference-list">{preferenceItems.map((x,i)=><div key={i}><span>{x}</span><div className="scale-dots">{[1,2,3,4,5].map(n=><i key={n}>{n}</i>)}</div></div>)}</div>}
+    {section.preferences && <div className="preference-list">{preferenceItems.map((x,i)=><div key={i}>
+      <StudyTerm text={x} furigana={furigana} compact />
+      <div className="scale-dots">{[1,2,3,4,5].map(n=><i key={n}>{n}</i>)}</div>
+    </div>)}</div>}
 
-    {section.checklist && <div className="checklist-groups">{checklistGroups.map(g=><div className="check-group" key={g.title}><h3>{g.title}</h3><div>{g.items.map(x=><span key={x}>○ / ×　{x}</span>)}</div></div>)}</div>}
+    {section.checklist && <div className="checklist-groups">{checklistGroups.map(g=><div className="check-group" key={g.title}>
+      <StudyTerm text={g.title} furigana={furigana} />
+      <div>{g.items.map(x=><div className="check-study-row" key={x}><span>○ / ×</span><StudyTerm text={x} furigana={furigana} compact /></div>)}</div>
+    </div>)}</div>}
 
     {section.keigoTable && <div className="data-table four-col">
       <div className="data-head"><b>普通</b><b>丁寧語</b><b>尊敬語</b><b>謙譲語</b></div>
-      {keigoVerbs.map((r,i)=><div className="data-row" key={i}>{r.map((x,j)=><span key={j}>{x}</span>)}</div>)}
+      {keigoVerbs.map((r,i)=><div className="data-row study-data-row" key={i}>{r.map((x,j)=><StudyTerm text={x} furigana={furigana} compact key={j}/>)}</div>)}
     </div>}
 
-    {section.pairs && <PairTable rows={section.pairs} left="避けたい / 対象" right="自然・正しい" />}
+    {section.pairs && <PairTable rows={section.pairs} left="避けたい / 対象" right="自然・正しい" furigana={furigana} />}
 
-    {section.politePairs && <PairTable rows={politePairs} left="普通の言葉" right="丁寧な言葉" />}
+    {section.politePairs && <PairTable rows={politePairs} left="普通の言葉" right="丁寧な言葉" furigana={furigana} />}
 
     {section.note && <div className="lesson-note">💡 {section.note}</div>}
   </section>
