@@ -1,0 +1,13 @@
+{
+  "name":"Nihongo Study",
+  "short_name":"Nihongo",
+  "description":"Học tiếng Nhật phỏng vấn, BJT và Kaiwa",
+  "start_url":"/cong_viec/",
+  "scope":"/cong_viec/",
+  "display":"standalone",
+  "background_color":"#fff8ec",
+  "theme_color":"#e8b44a",
+  "icons":[
+    {"src":"/cong_viec/meling-chan.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
