@@ -285,7 +285,7 @@ export const lessonMeta = {
   'たくましい':['たくましい','Mạnh mẽ, cứng cáp'],
   'ルーズな':['ルーズ な','Lỏng lẻo / xuề xòa'],
   '忘れっぽい':['わすれっぽい','Hay quên'],
-  'いやなことも気にしない':['いや な こと も き に しない','Không để bụng chuyện khó chịu'],,
+  'いやなことも気にしない':['いや な こと も き に しない','Không để bụng chuyện khó chịu'],
 
   // Page 13 - 希望条件
   '好きなこと、興味のある分野での仕事がしたい':['すき な こと、きょうみ の ある ぶんや で の しごと が したい','Muốn làm công việc mình thích / trong lĩnh vực mình quan tâm'],
@@ -374,7 +374,7 @@ export const lessonMeta = {
   '手で口をかくす':['て で くち を かくす','Dùng tay che miệng'],
   '単調な話し方':['たんちょう な はなしかた','Cách nói đơn điệu'],
   '尻切れとんぼの話し方':['しりきれとんぼ の はなしかた','Nói cụt, kết thúc câu không rõ'],
-  '床や天井をみる':['ゆか や てんじょう を みる','Nhìn xuống sàn hoặc lên trần thay vì nhìn người đối diện'],,
+  '床や天井をみる':['ゆか や てんじょう を みる','Nhìn xuống sàn hoặc lên trần thay vì nhìn người đối diện'],
 
   // Page 19 - 敬語動詞
   '居る':['いる','Có mặt / ở'],
@@ -487,7 +487,7 @@ export const lessonMeta = {
   '今日・昨日・おととい':['きょう・きのう・おととい','Hôm nay / hôm qua / hôm kia'],
   '本日・昨日（さくじつ）・一昨日（いっさくじつ）':['ほんじつ・さくじつ・いっさくじつ','Hôm nay / hôm qua / hôm kia (trang trọng)'],
   '明日・あさって':['あした・あさって','Ngày mai / ngày kia'],
-  '明日（あす）・明後日（みょうごにち）':['あす・みょうごにち','Ngày mai / ngày kia (trang trọng)'],,
+  '明日（あす）・明後日（みょうごにち）':['あす・みょうごにち','Ngày mai / ngày kia (trang trọng)'],
 
   // Page 19 - common keigo mistakes / self vs. other side
   '（社外の人に）○○社長が':['（しゃがい の ひと に）○○しゃちょう が','Khi nói với người ngoài công ty: “Giám đốc ○○...”'],
