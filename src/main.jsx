@@ -1,169 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles.css'
-
-const helloLessons = [
-  {
-    id: 'h02', page: 2, title: '面接の基本セミナー', reading: 'めんせつ の きほん セミナー',
-    vi: 'Seminar cơ bản về phỏng vấn',
-    summary: 'Không có một “đáp án thần kỳ” đảm bảo 100% được tuyển. Nội dung trả lời phải phù hợp với chính kinh nghiệm và hoàn cảnh của bạn.',
-    points: ['面接とは', '面接の流れ', '志望動機', '自己PR', '退職理由', '企業への質問'],
-    doText: 'Dùng tài liệu như khung tư duy, sau đó biến thành câu trả lời của chính mình.',
-    dontText: 'Học thuộc một mẫu dài rồi đọc như robot.'
-  },
-  {
-    id: 'h03', page: 3, title: '面接とは', reading: 'めんせつ とは',
-    vi: 'Phỏng vấn là gì?',
-    summary: 'Mục tiêu không chỉ là “được nhận”, mà là tìm nơi bạn có thể làm việc phù hợp và lâu dài. Doanh nghiệp nhìn vào năng lực/kinh nghiệm, động lực và cách bạn hòa nhập.',
-    points: ['能力・適性・経験', '意欲（やる気）', '適応性・社会性', '第一印象も重要'],
-    doText: 'Chuẩn bị cả nội dung lẫn cách nói, thái độ và tác phong.',
-    dontText: 'Chỉ chăm chăm trả lời đúng câu hỏi mà bỏ qua biểu cảm, giọng nói và tác phong.'
-  },
-  {
-    id: 'h04', page: 4, title: '志望動機を話す', reading: 'しぼうどうき を はなす',
-    vi: 'Cách nói lý do ứng tuyển',
-    summary: 'Khung 3 phần: vì sao chọn công việc/công ty này → bạn có kinh nghiệm/năng lực gì → bạn muốn đóng góp thế nào sau khi vào công ty.',
-    points: ['その仕事・企業を選んだ理由', '何ができるのか', '意欲・どう貢献するか'],
-    doText: 'Nối kinh nghiệm thật của bạn với nhu cầu của vị trí đang tuyển.',
-    dontText: 'Chỉ nói “vì lương tốt”, “vì gần nhà” hoặc khen công ty chung chung.'
-  },
-  {
-    id: 'h05', page: 5, title: '自己PR', reading: 'じこピーアール',
-    vi: 'Tự PR / điểm mạnh có căn cứ',
-    summary: 'Tự PR hiệu quả là tìm phần giao nhau giữa thế mạnh của bạn và điều doanh nghiệp đang cần. Nên có bằng chứng cụ thể như đánh giá của sếp/khách hàng hoặc một tình huống thực tế.',
-    points: ['能力・長所・強み・知識', '求めている人物像', '具体的な根拠やエピソード'],
-    doText: 'Nói 1 thế mạnh + 1 ví dụ + cách thế mạnh đó giúp ích cho công việc mới.',
-    dontText: 'Liệt kê nhiều tính từ tốt mà không có ví dụ.'
-  },
-  {
-    id: 'h06', page: 6, title: '退職理由を話す', reading: 'たいしょくりゆう を はなす',
-    vi: 'Nói lý do nghỉ việc',
-    summary: 'Không nên đẩy toàn bộ bất mãn về công ty cũ ra trước. Hãy nói ngắn, khách quan và chuyển trọng tâm sang điều bạn muốn làm tiếp theo.',
-    points: ['前職の批判・不満を全面に出さない', '客観的事項を短めに', '今後どうしたいかにつなげる'],
-    doText: 'Sự thật → ngắn gọn → hướng tích cực → lý do công việc mới phù hợp.',
-    dontText: 'Kể dài chuyện xấu của sếp, đồng nghiệp, lương hoặc công ty cũ.'
-  },
-  {
-    id: 'h07', page: 7, title: '退職理由・企業への質問', reading: 'たいしょくりゆう・きぎょう への しつもん',
-    vi: 'Sắp xếp lý do nghỉ và câu hỏi dành cho công ty',
-    summary: 'Liệt kê các lý do nghỉ, xếp ưu tiên, sau đó nối với từ khóa tích cực. Cuối phỏng vấn thường có “何か質問はありますか”, nên chuẩn bị câu hỏi thể hiện sự quan tâm đến công việc.',
-    points: ['Step1 理由を書き出す', 'Step2 ポジティブにまとめる', '逆質問を準備する'],
-    doText: 'Hỏi về công việc thực tế, chuẩn bị trước khi vào làm, điều nhân viên nên chú ý.',
-    dontText: 'Nói “không có câu hỏi gì” ngay lập tức khi vẫn còn điều quan trọng chưa rõ.'
-  },
-  {
-    id: 'h08', page: 8, title: '面接ワークシート編', reading: 'めんせつ ワークシート へん',
-    vi: 'Phần worksheet chuẩn bị phỏng vấn',
-    summary: 'Từ đây tài liệu chuyển sang các worksheet giúp bạn nhìn lại kinh nghiệm, thế mạnh, điều kiện mong muốn và cách chuẩn bị câu trả lời.',
-    points: ['自己理解', '強み発見', '質問準備', '希望条件', '自己点検'],
-    doText: 'Đọc theo thứ tự trang và ghi chú riêng nếu cần.',
-    dontText: 'Bỏ qua phần tự nhìn lại kinh nghiệm rồi nhảy thẳng vào học mẫu.'
-  },
-  {
-    id: 'h09', page: 9, title: '今までの仕事を振り返る', reading: 'いままで の しごと を ふりかえる',
-    vi: 'Nhìn lại công việc đã làm',
-    summary: 'Tự rà lại công ty, địa điểm, thời gian làm, quy mô nơi làm, nhiệm vụ, kỹ năng đã có, điều khiến bạn thấy có ý nghĩa, bằng cấp và nội dung tự học.',
-    points: ['会社・所在地', '勤務期間', '担当業務', '身につけたこと', 'やりがい', '免許・資格・自主学習'],
-    doText: 'Chuẩn bị dữ kiện thật để sau này dùng cho 自己紹介, 自己PR và 志望動機.',
-    dontText: 'Chỉ nhớ tên công ty mà không mô tả được mình thực sự đã làm gì.'
-  },
-  {
-    id: 'h10', page: 10, title: '強みを探す', reading: 'つよみ を さがす',
-    vi: 'Tìm điểm mạnh từ hành động',
-    summary: 'Tài liệu gợi ý nhìn vào hành vi thật: từng thử việc khó, giúp người khác, giao tiếp/giảng giải, nghĩ ý tưởng mới, làm việc có kế hoạch, giữ quy tắc và manner.',
-    points: ['勤勉性・積極性', '観察力・気配り', 'コミュニケーション能力', '発想力・企画力', '計画性・正確性', '自己管理能力'],
-    doText: 'Chọn 2–3 từ khóa phản ánh đúng hành vi của bạn.',
-    dontText: 'Chọn một tính từ chỉ vì nghe “xịn”.'
-  },
-  {
-    id: 'h11', page: 11, title: 'リフレーミング', reading: 'リフレーミング',
-    vi: 'Đổi cách nhìn một đặc điểm',
-    summary: 'Một đặc điểm có thể được diễn đạt tích cực hơn nếu đúng ngữ cảnh: ví dụ nhút nhát → điềm tĩnh/khiêm tốn; cứng đầu → ý chí mạnh; nói ít → biết lắng nghe.',
-    points: ['短所を隠すのではなく見方を変える', '性格と行動特性を言い換える'],
-    doText: 'Đổi cách diễn đạt nhưng vẫn giữ sự thật.',
-    dontText: 'Biến điểm yếu thành một “điểm mạnh giả” quá lộ.'
-  },
-  {
-    id: 'h12', page: 12, title: '面接質問を想定する', reading: 'めんせつ しつもん を そうていする',
-    vi: 'Chuẩn bị trước nhóm câu hỏi',
-    summary: 'Các nhóm chính gồm: giới thiệu/kinh nghiệm, tính cách–giá trị–năng lực, hiểu công việc và động cơ ứng tuyển, lý do chuyển việc, kinh nghiệm, lương–đãi ngộ và các câu hỏi khác.',
-    points: ['自己紹介・経歴', '長所・短所・仕事観', '志望動機', '退職理由', '成功談・失敗談', '給与・残業', '逆質問'],
-    doText: 'Mỗi câu nên có lý do hoặc ví dụ ngắn.',
-    dontText: 'Trả lời dài đến mức mất trọng tâm.'
-  },
-  {
-    id: 'h13', page: 13, title: '希望条件を明確にする', reading: 'きぼうじょうけん を めいかく に する',
-    vi: 'Làm rõ điều kiện công việc mong muốn',
-    summary: 'Tài liệu cho chấm mức ưu tiên 1–5 về lĩnh vực công việc, điều kiện lao động, môi trường, cân bằng cuộc sống và kế hoạch tương lai.',
-    points: ['仕事内容', '賃金・残業・保険', '職場環境・通勤', '休暇・子育て・介護', '長期勤務・成長・昇進'],
-    doText: 'Biết điều nào là “phải có”, điều nào có thể linh hoạt.',
-    dontText: 'Ứng tuyển mọi nơi mà không biết mình thật sự cần gì.'
-  },
-  {
-    id: 'h14', page: 14, title: '面接自己点検チェック', reading: 'めんせつ じこてんけん チェック',
-    vi: 'Checklist tự kiểm tra',
-    summary: 'Tự kiểm tra trang phục–thái độ, biểu cảm, cách lắng nghe, cách nói, kỹ thuật phỏng vấn và những hành vi dễ tạo ấn tượng xấu.',
-    points: ['服装と態度', '表現力', '聞く態度', '話し方', '面接技術', '不適格要素'],
-    doText: 'Sau mỗi lần luyện mock interview, chọn 1–2 điểm cần sửa.',
-    dontText: 'Cố sửa tất cả mọi thứ trong một lần.'
-  },
-  {
-    id: 'h15', page: 15, title: '面接マナー編', reading: 'めんせつ マナー へん',
-    vi: 'Phần manner phỏng vấn',
-    summary: 'Phần cuối tập trung vào trang phục, cúi chào, vào phòng, rời phòng, kính ngữ và ngôn ngữ tiếp khách.',
-    points: ['服装', 'お辞儀', '入室・着席', '退室', '敬語', '接遇用語', 'お礼状'],
-    doText: 'Học theo hành động và luyện thành thói quen.',
-    dontText: 'Chỉ đọc lý thuyết mà không thử đứng lên thực hành.'
-  },
-  {
-    id: 'h16', page: 16, title: '服装・お辞儀', reading: 'ふくそう・おじぎ',
-    vi: 'Trang phục và cúi chào',
-    summary: 'Tài liệu khuyên kiểu tóc sạch gọn, sơ mi/blouse trắng, suit đen/xanh navy/xám, túi A4 đứng được, giày đơn giản. Khi cúi chào: eye contact → cúi từ hông → dừng → đứng lên chậm → eye contact.',
-    points: ['清潔感', '白いシャツ・ブラウス', '黒・紺・グレーのスーツ', 'アイコンタクト', '会釈・敬礼・最敬礼'],
-    doText: 'Ưu tiên sạch, gọn, vừa vặn, dễ vận động.',
-    dontText: 'Chọn đồ nổi bật hơn nội dung phỏng vấn.'
-  },
-  {
-    id: 'h17', page: 17, title: '入室・着席', reading: 'にゅうしつ・ちゃくせき',
-    vi: 'Vào phòng và ngồi',
-    summary: 'Trình tự gốc: gõ 3 lần → nghe “どうぞ” → nói “失礼します” khi mở cửa → 会釈 15° → đóng cửa nhẹ → 敬礼 30° → đi đến ghế → giới thiệu tên và 最敬礼 45° → chỉ ngồi sau khi được mời.',
-    points: ['3回ノック', '失礼します', '会釈15°', '敬礼30°', '最敬礼45°', 'おかけください→着席'],
-    doText: 'Luyện cả câu nói lẫn động tác theo đúng thứ tự.',
-    dontText: 'Vừa nói vừa cúi sâu ở phần 敬礼/最敬礼.'
-  },
-  {
-    id: 'h18', page: 18, title: '退室', reading: 'たいしつ',
-    vi: 'Rời phòng',
-    summary: 'Khi được báo kết thúc: cúi khi đang ngồi → đứng cạnh ghế và nói cảm ơn kèm 最敬礼 → trước khi ra cửa quay lại 敬礼. Tài liệu cũng lưu ý cách đặt túi, ô và hỏi về việc đeo khẩu trang nếu cần.',
-    points: ['ありがとうございました', '最敬礼45°', '出口で敬礼30°', 'かばんは床', '傘の扱い'],
-    doText: 'Giữ tác phong đến tận khi rời khỏi phòng.',
-    dontText: 'Vừa phỏng vấn xong là thả lỏng ngay.'
-  },
-  {
-    id: 'h19', page: 19, title: 'ビジネス・接遇用語', reading: 'ビジネス・せつぐう ようご',
-    vi: 'Kính ngữ và ngôn ngữ business',
-    summary: 'Ôn 尊敬語・謙譲語・丁寧語 và các động từ thường gặp như いらっしゃる／伺う／拝見する／申す／おっしゃる. Tài liệu cũng nêu các lỗi kính ngữ thường gặp.',
-    points: ['尊敬語', '謙譲語', '丁寧語', '御社・弊社', 'よく使われる間違った敬語'],
-    doText: 'Ưu tiên vài mẫu chắc chắn dùng đúng.',
-    dontText: 'Cố dùng kính ngữ quá khó rồi dùng sai chủ thể.'
-  },
-  {
-    id: 'h20', page: 20, title: '接遇用語', reading: 'せつぐう ようご',
-    vi: 'Cách nói lịch sự trong môi trường công việc',
-    summary: 'Trang này chuyển cách nói đời thường sang cách lịch sự hơn, ví dụ よろしいですか, かしこまりました, 少々お待ちください, 恐れ入りますが, お差し支えなければ.',
-    points: ['よろしいですか', 'かしこまりました', '少々お待ちください', '恐れ入りますが', 'お差し支えなければ'],
-    doText: 'Học theo cụm hoàn chỉnh.',
-    dontText: 'Dịch từng chữ từ tiếng Việt sang tiếng Nhật.'
-  },
-  {
-    id: 'h21', page: 21, title: 'お礼状サンプル', reading: 'おれいじょう サンプル',
-    vi: 'Mẫu thư cảm ơn sau phỏng vấn',
-    summary: 'Tài liệu cho một mẫu thư cảm ơn. Đây không phải việc bắt buộc; có thể dùng khi mức độ mong muốn vào công ty cao hoặc muốn follow-up sau phỏng vấn.',
-    points: ['必ずしも書く必要はない', '志望度が高い会社へのアピール', '面接後のフォロー'],
-    doText: 'Nếu gửi, cá nhân hóa dựa trên nội dung đã trao đổi trong buổi phỏng vấn.',
-    dontText: 'Gửi mẫu copy-paste y hệt cho mọi công ty.'
-  }
-]
+import LessonVisual from './components/LessonVisuals.jsx'
+import { basicLessons as helloLessons, reframes, preferenceItems, checklistGroups, keigoVerbs, politePairs } from './data/basicLessons.js'
+import { interviewBookIntro, getSampleForQuestion } from './data/interviewSamples.js'
 
 const interviewQuestions = [
   ['自己紹介をお願いします。','じこしょうかい を おねがいします','Mời bạn tự giới thiệu về bản thân.','基本','事項紹介していただけるようお願いします'],
@@ -278,6 +118,70 @@ function mascotLine(progress) {
   return '勉強は？？？ 👁️👄👁️'
 }
 
+
+function FuriParagraph({jp, reading, furigana}) {
+  return <div className="jp-study-block">
+    <RubyLine text={jp} reading={reading} furigana={furigana} className="jp-rich" />
+    <button className="mini-audio" onClick={() => speak(jp)}>🔊</button>
+  </div>
+}
+
+function PairTable({rows, left='Gốc', right='Nên dùng'}) {
+  return <div className="pair-table">
+    <div className="pair-head"><b>{left}</b><b>{right}</b></div>
+    {rows.map((r,i)=><div className="pair-row" key={i}><span>{r[0]}</span><span>{r[1]}</span></div>)}
+  </div>
+}
+
+function SectionRenderer({section, furigana}) {
+  return <section className="content-card rich-section">
+    <div className="rich-heading"><div><h2>{section.h}</h2>{section.vi && <p>{section.vi}</p>}</div></div>
+
+    {section.jp && <FuriParagraph jp={section.jp} reading={section.reading} furigana={furigana} />}
+    {section.body && <p className="large-text">{section.body}</p>}
+
+    {section.bullets && <ul className="lesson-bullets">{section.bullets.map((x,i)=><li key={i}>{x}</li>)}</ul>}
+
+    {section.cards && <div className="info-card-grid">{section.cards.map((x,i)=><div className="mini-info-card" key={i}><b>{x[0]}</b><span>{x[1]}</span></div>)}</div>}
+
+    {section.steps && <div className="steps-list">{section.steps.map((x,i)=><div className="step-row" key={i}><b>{x[0]}</b><div><strong>{x[1]}</strong>{x[2]&&<span>{x[2]}</span>}</div></div>)}</div>}
+
+    {section.prompts && <div className="prompt-list">{section.prompts.map((x,i)=><div key={i}><b>{x[0]}</b><span>{x[1]}</span></div>)}</div>}
+
+    {section.strengths && <div className="strength-table">{section.strengths.map((x,i)=><div key={i}><span>{x[0]}</span><b>{x[1]}</b></div>)}</div>}
+
+    {section.reframes && <PairTable rows={reframes} left="書きかえたい語" right="積極的表現" />}
+
+    {section.preferences && <div className="preference-list">{preferenceItems.map((x,i)=><div key={i}><span>{x}</span><div className="scale-dots">{[1,2,3,4,5].map(n=><i key={n}>{n}</i>)}</div></div>)}</div>}
+
+    {section.checklist && <div className="checklist-groups">{checklistGroups.map(g=><div className="check-group" key={g.title}><h3>{g.title}</h3><div>{g.items.map(x=><span key={x}>○ / ×　{x}</span>)}</div></div>)}</div>}
+
+    {section.keigoTable && <div className="data-table four-col">
+      <div className="data-head"><b>普通</b><b>丁寧語</b><b>尊敬語</b><b>謙譲語</b></div>
+      {keigoVerbs.map((r,i)=><div className="data-row" key={i}>{r.map((x,j)=><span key={j}>{x}</span>)}</div>)}
+    </div>}
+
+    {section.pairs && <PairTable rows={section.pairs} left="避けたい / 対象" right="自然・正しい" />}
+
+    {section.politePairs && <PairTable rows={politePairs} left="普通の言葉" right="丁寧な言葉" />}
+
+    {section.note && <div className="lesson-note">💡 {section.note}</div>}
+  </section>
+}
+
+function BookIntroCard() {
+  return <section className="book-intro-card">
+    <div className="book-cover-mini">面接<br/><small>質問及び回答</small></div>
+    <div>
+      <span className="course-kicker">SOURCE GUIDE</span>
+      <h2>{interviewBookIntro.title}</h2>
+      <p>{interviewBookIntro.sourceNote}</p>
+      <div className="source-structure">{interviewBookIntro.structure.map(x=><div key={x[0]}><b>{x[0]}</b><span>{x[1]}</span></div>)}</div>
+      <div className="source-warning">⚠️ {interviewBookIntro.warning}</div>
+    </div>
+  </section>
+}
+
 function App() {
   const [screen, setScreen] = useState('home')
   const [furigana, setFurigana] = useStoredState('ns-furigana', true)
@@ -286,6 +190,7 @@ function App() {
   const [learned, setLearned] = useStoredState('ns-learned', [])
   const [streak] = useStoredState('ns-streak', { count: 1, last: new Date().toISOString().slice(0,10) })
   const [filter, setFilter] = useState('Tất cả')
+  const [questionTab, setQuestionTab] = useState('questions')
   const [search, setSearch] = useState('')
   const [activeQ, setActiveQ] = useState(null)
   const [activeLesson, setActiveLesson] = useState(null)
@@ -486,9 +391,9 @@ function App() {
           <div className="audio-row"><button onClick={()=>speak(l.title)}>🔊 Nghe</button><button onClick={()=>speak(l.title,3)}>🔁 x3</button></div>
         </div>
 
-        <section className="content-card"><h2>💡 Hiểu nhanh</h2><p className="large-text">{l.summary}</p></section>
-        <section className="content-card"><h2>🧩 Ý chính</h2><div className="chip-wrap">{l.points.map(x=><span className="chip" key={x}>{x}</span>)}</div></section>
-        <section className="do-dont"><div className="do"><h3>✅ Nên</h3><p>{l.doText}</p></div><div className="dont"><h3>💀 Tự hủy nếu...</h3><p>{l.dontText}</p></div></section>
+        <LessonVisual type={l.visual} />
+        {l.sections.map((s,i)=><SectionRenderer key={i} section={s} furigana={furigana} />)}
+
         <button className={"learn-btn " + (learned.includes(l.id)?'done':'')} onClick={()=>toggleLearned(l.id)}>{learned.includes(l.id)?'✅ Đã học xong':'○ Đánh dấu đã học'}</button>
       </main>
     </div>
@@ -498,14 +403,36 @@ function App() {
     return <div className="app-shell">
       <Header title="面接質問集" onBack={() => setScreen('interview')} />
       <main className="page">
-        <div className="source-order"><b>📖 原文順</b><span>Luôn giữ thứ tự nguồn; filter chỉ giúp tìm nhanh.</span></div>
-        <input className="search-box" placeholder="🔍 Tìm bằng Nhật hoặc Việt..." value={search} onChange={e=>setSearch(e.target.value)} />
-        <div className="filter-scroll">{categories.map(c=><button key={c} className={filter===c?'active':''} onClick={()=>setFilter(c)}>{c}</button>)}</div>
-        <div className="question-list">{filteredQuestions.map(q=><button className="question-row" key={q.id} onClick={()=>openQ(q)}>
-          <div className="q-num">{String(q.order).padStart(2,'0')}</div>
-          <div><h3><RubyLine text={q.jp} reading={q.reading} furigana={furigana}/></h3><p>{q.vi}</p><span className="tag">{q.category}</span></div>
-          <div className="q-status">{answers[q.id] ? '✍️' : ''}{bookmarks.includes(q.id) ? '⭐' : ''}{learned.includes(q.id) ? '✅' : ''}</div>
-        </button>)}</div>
+        <div className="source-tabs">
+          <button className={questionTab==='intro'?'active':''} onClick={()=>setQuestionTab('intro')}>📘 Giới thiệu</button>
+          <button className={questionTab==='questions'?'active':''} onClick={()=>setQuestionTab('questions')}>❓ 69 câu hỏi</button>
+          <button className={questionTab==='samples'?'active':''} onClick={()=>setQuestionTab('samples')}>💬 24 bài mẫu</button>
+        </div>
+
+        {questionTab === 'intro' && <BookIntroCard />}
+
+        {questionTab === 'questions' && <>
+          <div className="source-order"><b>📖 原文順</b><span>Giữ nguyên thứ tự nguồn; câu Nhật chính đã được sửa tự nhiên để học.</span></div>
+          <input className="search-box" placeholder="🔍 Tìm bằng Nhật hoặc Việt..." value={search} onChange={e=>setSearch(e.target.value)} />
+          <div className="filter-scroll">{categories.map(c=><button key={c} className={filter===c?'active':''} onClick={()=>setFilter(c)}>{c}</button>)}</div>
+          <div className="question-list">{filteredQuestions.map(q=><button className="question-row" key={q.id} onClick={()=>openQ(q)}>
+            <div className="q-num">{String(q.order).padStart(2,'0')}</div>
+            <div><h3><RubyLine text={q.jp} reading={q.reading} furigana={furigana}/></h3><p>{q.vi}</p><span className="tag">{q.category}</span>{q.sourceHasSample&&<span className="tag source">Có bài mẫu</span>}</div>
+            <div className="q-status">{answers[q.id] ? '✍️' : ''}{bookmarks.includes(q.id) ? '⭐' : ''}{learned.includes(q.id) ? '✅' : ''}</div>
+          </button>)}</div>
+        </>}
+
+        {questionTab === 'samples' && <>
+          <div className="source-order"><b>💬 24 đáp án có trong file</b><span>Không bỏ phần này nữa: mỗi bài có ý gốc + bản Nhật tự nhiên + dịch Việt + TTS.</span></div>
+          <div className="question-list">{interviewQuestions.slice(0,24).map(q=>{
+            const s=getSampleForQuestion(q.id)
+            return <button className="question-row sample-row" key={q.id} onClick={()=>openQ(q)}>
+              <div className="q-num">{String(q.order).padStart(2,'0')}</div>
+              <div><h3>{s?.title || q.jp}</h3><p>{s?.sourceIdeaVi}</p><span className="tag source">Bài mẫu từ sách</span></div>
+              <div className="q-status">›</div>
+            </button>
+          })}</div>
+        </>}
       </main>
     </div>
   }
@@ -524,6 +451,20 @@ function App() {
         </section>
 
         <details className="original-box"><summary>📖 原文を見る • Xem câu gốc trong tài liệu</summary><p>{q.original}</p><small>Câu chính phía trên đã được biên tập thành cách hỏi tự nhiên hơn.</small></details>
+
+        {getSampleForQuestion(q.id) ? (() => {
+          const s = getSampleForQuestion(q.id)
+          return <section className="sample-answer-card">
+            <div className="sample-answer-head"><div><span>💬</span><div><b>Đáp án gợi ý từ tài liệu</b><small>Câu {q.order}/24 có mẫu trong file</small></div></div><button className="mini-audio" onClick={()=>speak(s.naturalJp)}>🔊</button></div>
+            <details className="source-idea"><summary>🧠 Ý đầy đủ của mẫu gốc</summary><p>{s.sourceIdeaVi}</p></details>
+            <div className="natural-answer">
+              <span className="label-good">✅ Bản Nhật tự nhiên nên học</span>
+              <RubyLine text={s.naturalJp} reading={s.reading} furigana={furigana} className="jp-rich" />
+            </div>
+            <p className="translation">🇻🇳 {s.vi}</p>
+            <div className="sample-tip">Meling Chan: dùng mẫu để học cấu trúc, đừng học thuộc thông tin cá nhân của người trong sách 😭</div>
+          </section>
+        })() : <div className="no-sample-note">📌 File gốc chỉ cung cấp đáp án đến câu 24. Từ câu 25 trở đi app không tự bịa “đáp án của sách”; bạn vẫn có thể tự viết và lưu câu trả lời của mình.</div>}
 
         <section className="answer-card">
           <div className="answer-head"><div><span>🙋</span><h2>Câu trả lời của tôi</h2></div><button className="star-btn" onClick={()=>toggleBookmark(q.id)}>{bookmarks.includes(q.id)?'⭐':'☆'}</button></div>
