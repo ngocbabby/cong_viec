@@ -1,5 +1,5 @@
 :root{
-  font-family: Inter, ui-rounded, "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Segoe UI", "Noto Sans", "Yu Gothic UI", "Yu Gothic", Meiryo, Arial, sans-serif;
   color:#3d2d25;
   background:#fff8ec;
   font-synthesis:none;
@@ -194,3 +194,13 @@ ruby rt{font-size:.53em;color:#9b6c5f;font-weight:700;letter-spacing:.02em}
   .triangle-flow>div{min-width:100px}
   .data-head b,.data-row span{font-size:10px;padding:7px 5px}
 }
+
+
+/* rendering safety: prevent furigana/text from creating page-wide overflow */
+html,body,#root{max-width:100%;overflow-x:hidden}
+.page,.question-detail,.question-main,.sample-answer-card,.natural-answer,.jp-study-block,.saved-answer{min-width:0;max-width:100%}
+.long-furi{display:flex;flex-direction:column;gap:5px;min-width:0;max-width:100%;white-space:normal}
+.long-furi-reading{display:block;font-size:12px;line-height:1.65;color:#a06658;font-weight:650;overflow-wrap:anywhere;word-break:normal;white-space:normal}
+.long-furi-text{display:block;min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;word-break:normal}
+.natural-answer .long-furi{width:100%}
+.natural-answer .long-furi-reading{margin-bottom:2px}
