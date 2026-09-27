@@ -90,8 +90,21 @@ function useStoredState(key, initial) {
 }
 
 function RubyLine({ text, reading, furigana = true, className = '' }) {
-  if (!furigana || !reading) return <span className={className}>{text}</span>
-  return <ruby className={className}>{text}<rt>{reading}</rt></ruby>
+  const t = String(text ?? '').normalize('NFC')
+  const r = String(reading ?? '').normalize('NFC')
+  if (!furigana || !r) return <span className={className}>{t}</span>
+
+  // A single <ruby> around a whole paragraph makes Chrome stretch the <rt>
+  // into one unbreakable line. For long text, keep the reading ABOVE the
+  // Japanese as a wrapping study line instead of letting it overflow.
+  if (t.length > 28 || r.length > 42) {
+    return <span className={(className + ' long-furi').trim()}>
+      <span className="long-furi-reading">{r}</span>
+      <span className="long-furi-text">{t}</span>
+    </span>
+  }
+
+  return <ruby className={className}>{t}<rt>{r}</rt></ruby>
 }
 
 function speak(text, repeat = 1) {
