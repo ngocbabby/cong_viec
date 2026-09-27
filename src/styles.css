@@ -204,3 +204,41 @@ html,body,#root{max-width:100%;overflow-x:hidden}
 .long-furi-text{display:block;min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;word-break:normal}
 .natural-answer .long-furi{width:100%}
 .natural-answer .long-furi-reading{margin-bottom:2px}
+
+
+/* unified study rows: every Japanese learning item gets audio, reading and meaning when available */
+.study-term{min-width:0}
+.study-term-main{display:flex;align-items:flex-start;gap:8px;min-width:0}
+.study-term-jp{font-size:17px;font-weight:850;line-height:1.8;min-width:0;flex:1;overflow-wrap:anywhere}
+.study-term-vi{margin-top:4px;color:#8a7265;font-size:14px;line-height:1.5}
+.study-term.compact .study-term-jp{font-size:15px;line-height:1.65}
+.study-term.compact .study-term-vi{font-size:12px}
+.term-audio{flex:none;border:0;background:#fff6d9;color:#704e32;border-radius:12px;width:36px;height:36px;display:grid;place-items:center;box-shadow:0 3px 10px rgba(89,58,39,.08)}
+.rich-heading>.study-term{width:100%}
+.rich-heading .study-term-jp{font-size:21px}
+.rich-heading .study-term-vi{font-size:13px;font-weight:700;color:#a08070}
+.lesson-study-list{display:grid;gap:8px;margin-top:12px}
+.lesson-study-list>.study-term{background:#fff;border:1px solid #eee0d5;border-radius:15px;padding:11px 12px}
+.mini-info-card .study-term-vi{margin-top:5px}
+.prompt-list>div{display:block}
+.strength-table>div{align-items:start}
+.preference-list>div{align-items:start}
+.check-group>div{display:grid;grid-template-columns:1fr;gap:7px}
+.check-study-row{display:grid;grid-template-columns:44px 1fr;gap:6px;align-items:start;padding:7px 0;border-top:1px dashed #eee0d5}
+.check-study-row:first-child{border-top:0}
+.check-study-row>span{font-size:12px;color:#957d70;padding-top:8px}
+.study-data-row .study-term{padding:8px 6px;border-right:1px solid #f0e4da}
+.study-data-row .study-term-jp{font-size:12px;line-height:1.45}
+.study-data-row .study-term-vi{font-size:10px}
+.study-data-row .term-audio{width:27px;height:27px;font-size:11px}
+.pair-row .study-term{padding:9px 10px}
+.pair-row .study-term:first-child{border-right:1px solid #f0e4da}
+
+@media(max-width:520px){
+  .study-term-jp{font-size:17px}
+  .rich-heading .study-term-jp{font-size:20px}
+  .term-audio{width:34px;height:34px}
+  .study-data-row .study-term{padding:6px 4px}
+  .study-data-row .study-term-jp{font-size:10px}
+  .study-data-row .study-term-vi{font-size:9px}
+}
