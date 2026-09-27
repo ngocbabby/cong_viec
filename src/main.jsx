@@ -572,7 +572,7 @@ function App() {
         </div>
       </main>
     </div>
-  )
+  }
 
   return null
 }
